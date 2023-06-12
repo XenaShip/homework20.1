@@ -1,10 +1,15 @@
 from django.shortcuts import render
+from homework.models import Product
 
 
 # Create your views here.
 def index(request):
-    return render(request, 'catalog/home.html')
+    product_list = Product.objects.all()
+    context = {
+        'object_list': product_list
+    }
+    return render(request, 'homework/home.html', context)
 
 
 def contacts(request):
-    return render(request, 'catalog/contacts.html')
+    return render(request, 'homework/contacts.html')
