@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('homework.urls')),
+    path('', include('homework.urls', namespace='homework')),
     path('admin/', admin.site.urls),
 ]
 
