@@ -22,6 +22,6 @@
       <!-- Исходный вариант -->
         <!--<img src="/media/{{ object.preview }}" /> -->
         <img src="{% media_path object.preview %}" />
-        <img src="{% media_path object.preview %}" />
+        <img src="{{ object.preview|mediapath }}" />
   </div>
 {% endblock %}
