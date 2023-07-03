@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 
 from homework.models import Product, Note
@@ -43,9 +43,10 @@ def contacts(request):
 class NoteCreateView(generic.CreateView):
     model = Note
     fields = ('name', 'the_text', 'image', 'published')
+    success_url = reverse_lazy('homework:blog')
 
 
-class NoteListView(generic.DetailView):
+class NoteDetailView(generic.DetailView):
     model = Note
 
     def get_object(self, queryset=None):
@@ -59,5 +60,30 @@ class NoteListView(generic.DetailView):
         return context_data
 
 
+class NoteListView(generic.ListView):
+    model = Note
 
 
+class NoteUpdateView(generic.UpdateView):
+    model = Note
+    fields = ('name', 'the_text', 'image', 'published')
+    extra_context = {
+        'title': 'изменить статью'
+    }
+
+    def get_success_url(self):
+        return reverse('homework:note_list', args=[*self.kwargs.values()])
+
+
+class NoteCreateView(generic.CreateView):
+    model = Note
+    fields = ('name', 'the_text', 'image', 'published')
+    success_url = reverse_lazy('homework:note_list')
+    extra_context = {
+        'title': 'Создание статьи'
+    }
+
+
+class NoteDeleteView(generic.DeleteView):
+    model = Note
+    success_url = reverse_lazy('homework:blog')
