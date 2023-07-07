@@ -6,6 +6,7 @@ from homework.models import Product, Note
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateView
 from django.views.generic.list import ListView
+from django.views.generic import TemplateView
 
 
 class ProductListView(generic.ListView):
@@ -35,15 +36,14 @@ class ProductCreateView(generic.CreateView):
         'title': 'Создание продукта'
     }
 
+class ContactsTemplateView(generic.TemplateView):
+    template_name = 'homework/contacts2.html'
 
-def contacts(request):
-    return render(request, 'homework/contacts2.html')
 
-
-class NoteCreateView(generic.CreateView):
-    model = Note
-    fields = ('name', 'the_text', 'image', 'published')
-    success_url = reverse_lazy('homework:blog')
+#class NoteCreateView(generic.CreateView):
+#    model = Note
+#    fields = ('name', 'the_text', 'image', 'published')
+#    success_url = reverse_lazy('homework:blog')
 
 
 class NoteDetailView(generic.DetailView):
@@ -72,13 +72,13 @@ class NoteUpdateView(generic.UpdateView):
     }
 
     def get_success_url(self):
-        return reverse('homework:note_list', args=[*self.kwargs.values()])
+        return reverse('homework:note_detail', args=[*self.kwargs.values()])
 
 
 class NoteCreateView(generic.CreateView):
     model = Note
     fields = ('name', 'the_text', 'image', 'published')
-    success_url = reverse_lazy('homework:note_list')
+    success_url = reverse_lazy('homework:blog')
     extra_context = {
         'title': 'Создание статьи'
     }

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from homework.models import Product, Category
+from homework.models import Product, Category, Note
 # Register your models here.
 
 '''
@@ -23,3 +23,12 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name_category')
     list_filter = ('name_category',)
     search_fields = ('name_category', 'description',)
+
+
+@admin.register(Note)
+class NoteAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'the_text', 'image', 'made', 'published', 'views',)
+    list_filter = ('name',)
+    search_fields = ('name', 'made',)
+
+    prepopulated_fields = {'slug': ('name',)}

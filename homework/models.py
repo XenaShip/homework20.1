@@ -1,5 +1,5 @@
 import uuid
-
+from django.utils.text import slugify
 from django.db import models
 
 # Create your models here.
@@ -52,7 +52,7 @@ class Category(models.Model):
 
 class Note(models.Model):
     name = models.CharField(max_length=70, verbose_name='заголовок')
-    slug = models.CharField(max_length=255, verbose_name='слаг', unique_for_date='created')
+    slug = models.CharField(max_length=255, verbose_name='слаг', unique_for_date='made')
     the_text = models.CharField(max_length=200, verbose_name='текст')
     image = models.ImageField(upload_to='blog/', verbose_name='изображение', null=True)
     made = models.DateField(verbose_name='изготовлено', auto_now_add=True)
@@ -64,6 +64,16 @@ class Note(models.Model):
 
     def __str__(self):
         return f'Статья: {self.name}'
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            title = str(self.name)
+            string = title.translate(
+                str.maketrans("абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
+                              "abvgdeejzijklmnoprstufhzcss_y_euaABVGDEEJZIJKLMNOPRSTUFHZCSS_Y_EUA"))
+            self.slug = slugify(string)
+        super().save(*args, **kwargs)
+
 
     class Meta:
         verbose_name = 'публикация'
